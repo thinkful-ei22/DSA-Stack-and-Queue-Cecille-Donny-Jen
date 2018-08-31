@@ -50,6 +50,7 @@ function display(stack) {
 }
 
 function peek(stack) {
+  return stack.top.data;
   console.log(stack.top.data);
 }
 
@@ -60,7 +61,7 @@ function is_palindrome(s) {
   s = s.toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
   //   return s;
   //input: 1001
-  //"1001" 
+  //"1001"
   // your code goes here
   //make a stack
   // pop each letter and store temp string
@@ -72,12 +73,12 @@ function is_palindrome(s) {
   for(let i=0; i < s.length; i++){
     letterStack.push(s[i]);
   }
- 
+
   let tempString='';
- 
+
   for(let i=0; i < s.length; i++){
     tempString += letterStack.pop();
-   
+
 
   }
 
@@ -89,8 +90,40 @@ function is_palindrome(s) {
 
 }
 
-console.log(is_palindrome('A man, a plan, a canal: Panama'));
+function isClosed(s) {
+  s = s.trim();
 
+  let parens = new Stack();
 
+  for(let i=0; i < s.length; i++){
+    if(s[i] === "(" || s[i] === ")")
+    parens.push(s[i])
+  }
 
+//String with parens is in the stack - DONE!
 
+// Get first value - ")" DONE!
+// Get last value - "(" DONE!
+// Concat first and last value as a string
+// Compare it to a string that looks like this "()"
+
+const openParens = peek(parens);
+const closedParens = parens.top.next.data;
+const combo = closedParens + openParens;
+const complete = "()";
+
+  if(combo === complete) {
+    return true;
+  }
+
+}
+
+// console.log(JSON.stringify(parens, null, 2));
+console.log(isClosed("(hello)"));
+
+//input - () type String
+//output - true
+
+//V1 - ()
+// error - ( ...
+// error - ... )
