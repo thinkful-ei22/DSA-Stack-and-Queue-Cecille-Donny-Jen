@@ -1,38 +1,40 @@
+'use strict';
+
 class _Node {
-    constructor(data, next) {
-        this.data = data;
-        this.next = next;
-    }
+  constructor(data, next) {
+    this.data = data;
+    this.next = next;
+  }
 }
 
 class Stack {
-    constructor() {
-        this.top = null;
+  constructor() {
+    this.top = null;
+  }
+
+  push(data) {
+    //if the top of the stack is empty, then the data will be the
+    //top of the stack
+    if (this.top === null) {
+      this.top = new _Node(data, null);
+      return this.top;
     }
 
-    push(data) {
-        //if the top of the stack is empty, then the data will be the
-        //top of the stack
-        if (this.top === null) {
-            this.top = new _Node(data, null);
-            return this.top;
-        }
+    //if the top already has something then create a new node
+    //add data to the new node
+    // have the pointer point to the top
+    const node = new _Node(data, this.top);
+    this.top = node;
+  }
 
-        //if the top already has something then create a new node
-        //add data to the new node
-        // have the pointer point to the top
-        const node = new _Node(data, this.top);
-        this.top = node;
-    }
-
-    pop() {
-        //in order to remove the top of the stack, you have to point
-        //the pointer to the next item and that next item becomes the
-        //top of the stack
-        const node = this.top;
-        this.top = node.next;
-        return node.data;
-    }
+  pop() {
+    //in order to remove the top of the stack, you have to point
+    //the pointer to the next item and that next item becomes the
+    //top of the stack
+    const node = this.top;
+    this.top = node.next;
+    return node.data;
+  }
 }
 
 let starTrek = new Stack();
@@ -52,3 +54,43 @@ function peek(stack) {
 }
 
 peek(display(starTrek));
+
+
+function is_palindrome(s) {
+  s = s.toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
+  //   return s;
+  //input: 1001
+  //"1001" 
+  // your code goes here
+  //make a stack
+  // pop each letter and store temp string
+  //compare original string or ]
+  //console.log(s.pop());
+
+  let letterStack = new Stack();
+  //loop through our string add to stack
+  for(let i=0; i < s.length; i++){
+    letterStack.push(s[i]);
+  }
+ 
+  let tempString='';
+ 
+  for(let i=0; i < s.length; i++){
+    tempString += letterStack.pop();
+   
+
+  }
+
+  if(tempString === s) {
+    return true;
+  } else {
+    return false;
+  }
+
+}
+
+console.log(is_palindrome('A man, a plan, a canal: Panama'));
+
+
+
+
