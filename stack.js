@@ -90,10 +90,31 @@ function is_palindrome(s) {
 
 }
 
+//If " " - ' '
+//then - ignore everything that within it
 function isClosed(s) {
   let notMatch=true;
   s = s.trim();
-  s = s.split('').filter(c => c === '(' || c === '[' || c === '{'  || c === ')' || c === ']' || c === '}').join('');
+  const charsToArr = s.split('');
+
+  if(s.includes('"') || s.includes("'")) {
+    //We need to find the first index to find the opener
+    const openerQuote = s.indexOf("'") || s.indexOf('"');
+    const closerQuote = s.lastIndexOf("'") || s.lastIndexOf('"');
+    // console.log('Line 103', openerQuote, closerQuote)
+
+    if(openerQuote === closerQuote) {
+      console.log("Quote is not closed!")
+    } else if (openerQuote && closerQuote){
+      //Ignore what is within...
+      const difference = closerQuote - openerQuote;
+      const splicedChars = charsToArr.splice(openerQuote, difference + 1).join('');
+      console.log('These are the spliced characters!', splicedChars);
+    }
+  }
+
+  console.log('This is s!', s)
+  s = charsToArr.filter(c => c === '(' || c === '[' || c === '{'  || c === ')' || c === ']' || c === '}').join('');
   // if(s.length %2)
   console.log('FILTERED STRING', s);
 
@@ -101,16 +122,17 @@ function isClosed(s) {
     return notMatch=false;
   }
 
-  if(!s.includes( ')') || !s.includes( ']') || !s.includes( '}') ){
-    return notMatch=false;
-  }
+  // if(!s.includes( ')') || !s.includes( ']') || !s.includes( '}')){
+  //   console.log('Made it to Line 126!', s)
+  //   return notMatch=false;
+  // }
 
   if(s[0] === ')' || s[0] === ']' || s[0] === '}'){
     return notMatch=false;
   }
 
   let parens = new Stack();
-  
+
   let openParensCount = 0;
   //((
   //)
@@ -122,7 +144,7 @@ function isClosed(s) {
     else if (s[i] === ')' ||  s[i] === ']' || s[i] === '}' )
     {
       let currentTop = parens.pop();
-      
+
       //compare the top open character with the found closed character
       switch(s[i]){
       case ')':
@@ -153,10 +175,10 @@ function isClosed(s) {
       default:
         notMatch = false;
         //console.log('MATCH NOT FOUND');
-      }      
+      }
 
     }
-    
+
   }
 
   return notMatch;
@@ -189,9 +211,11 @@ function isClosed(s) {
 // console.log(isClosed('(1 + 2 + (3)'));  //false
 // console.log(isClosed('([({})])')); //true
 // console.log(isClosed('([({)}])')); //false
-// console.log(isClosed("'{(\"'"));
-// console.log(isClosed("[{'('}('')]"));
-// console.log(isClosed("[{'(\"}('')]"));
+// console.log(isClosed("'{(\"'")); -- check this later
+// console.log(isClosed("[{'('}('')]")); -- false
+// console.log(isClosed("[{'(\"}('')]")); -- false
+
+// console.log(isClosed("(({'hello'}))"));
 
 //input - () type String
 //output - true
