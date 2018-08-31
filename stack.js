@@ -58,7 +58,7 @@ peek(display(starTrek));
 
 
 function is_palindrome(s) {
-  s = s.toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
+  s = s.toLowerCase().replace(/[^a-zA-Z0-9]/g, '');
   //   return s;
   //input: 1001
   //"1001"
@@ -91,36 +91,107 @@ function is_palindrome(s) {
 }
 
 function isClosed(s) {
+  let notMatch=true;
   s = s.trim();
+  s = s.split('').filter(c => c === '(' || c === '[' || c === '{'  || c === ')' || c === ']' || c === '}').join('');
+  // if(s.length %2)
+  console.log('FILTERED STRING', s);
+
+  if(s.length%2 !== 0){
+    return notMatch=false;
+  }
+
+  if(!s.includes( ')') || !s.includes( ']') || !s.includes( '}') ){
+    return notMatch=false;
+  }
+
+  if(s[0] === ')' || s[0] === ']' || s[0] === '}'){
+    return notMatch=false;
+  }
 
   let parens = new Stack();
-
+  
+  let openParensCount = 0;
+  //((
+  //)
   for(let i=0; i < s.length; i++){
-    if(s[i] === "(" || s[i] === ")" || s[i] === "[" || s[i] === "]")
-    parens.push(s[i])
+    if(s[i] === '(' ||  s[i] === '[' || s[i] === '{'){
+      parens.push(s[i]);
+      openParensCount++;
+    }
+    else if (s[i] === ')' ||  s[i] === ']' || s[i] === '}' )
+    {
+      let currentTop = parens.pop();
+      
+      //compare the top open character with the found closed character
+      switch(s[i]){
+      case ')':
+        if(currentTop + s[i] === '()'){
+          // console.log('MATCH FOUND ()');
+        } else {
+          notMatch = false;
+        }
+        break;
+
+      case ']':
+        if(currentTop + s[i] === '[]'){
+          // console.log('MATCH FOUND []');
+        }else {
+          notMatch = false;
+        }
+        break;
+
+      case '}':
+        if(currentTop + s[i] === '{}'){
+          // console.log('MATCH FOUND {}');
+        }
+        else {
+          notMatch = false;
+        }
+        break;
+
+      default:
+        notMatch = false;
+        //console.log('MATCH NOT FOUND');
+      }      
+
+    }
+    
   }
 
-//String with parens is in the stack - DONE!
+  return notMatch;
 
-// Get first value - ")" DONE!
-// Get last value - "(" DONE!
-// Concat first and last value as a string
-// Compare it to a string that looks like this "()"
+  //String with parens is in the stack - DONE!
 
-const openParens = peek(parens);
-const closedParens = parens.top.next.data;
-const combo = closedParens + openParens;
-const complete = "()";
+  // Get first value - ")" DONE!
+  // Get last value - "(" DONE!
+  // Concat first and last value as a string
+  // Compare it to a string that looks like this "()"
 
-  if(combo === complete) {
-    return true;
-  }
-console.log(parens)
+  // const openParens = peek(parens);
+  // const closedParens = parens.top.next.data;
+  // const combo = closedParens + openParens;
+  // const complete = '()';
+
+  // if(combo === complete) {
+  //   return true;
+  // }
+  // console.log(parens);
 
 }
 
 // console.log(JSON.stringify(parens, null, 2));
-console.log(isClosed("(hello)"));
+// console.log(isClosed('(((((('));
+
+// console.log(isClosed('(1 + 2) + 3'));   //true
+// console.log(isClosed('(1 + 2) + 3)'));   //false
+// console.log(isClosed(')1 + 2) + 3'));  //false
+// console.log(isClosed('(1 + 2 + (3)'));  //false
+// console.log(isClosed('([({})])')); //true
+// console.log(isClosed('([({)}])')); //false
+// console.log(isClosed("'{(\"'"));
+// console.log(isClosed("[{'('}('')]"));
+// console.log(isClosed("[{'(\"}('')]"));
 
 //input - () type String
 //output - true
