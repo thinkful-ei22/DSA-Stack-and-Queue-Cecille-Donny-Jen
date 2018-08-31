@@ -96,7 +96,7 @@ function isClosed(s) {
   let parens = new Stack();
 
   for(let i=0; i < s.length; i++){
-    if(s[i] === "(" || s[i] === ")")
+    if(s[i] === "(" || s[i] === ")" || s[i] === "[" || s[i] === "]")
     parens.push(s[i])
   }
 
@@ -115,6 +115,7 @@ const complete = "()";
   if(combo === complete) {
     return true;
   }
+console.log(parens)
 
 }
 
